@@ -13,7 +13,7 @@ public class MainFrame extends JFrame {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        mainPanel.add(new Game(this), PanelIndex.Game.name());
+        mainPanel.add(new GamePanel(this), PanelIndex.Game.name());
         mainPanel.add(new Home(this), PanelIndex.Home.name());
         mainPanel.add(new Scoreboard(this), PanelIndex.Scoreboard.name());
         mainPanel.add(new UserInfo(this), PanelIndex.UserInfo.name());
