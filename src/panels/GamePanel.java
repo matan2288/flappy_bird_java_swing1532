@@ -10,6 +10,7 @@ public class GamePanel extends JPanel {
     private java.util.List<Pipes> pipes;
     private Keyboard keyboard;
     private JLabel birdcoordsLabel = new JLabel();
+    private JLabel pipescoordslabel = new JLabel();
     private final int PIPE_SPAWN_INTERVAL = 100; // Spawn new pipe every ~2 seconds at 60fps
     private int pipeSpawnTimer = 0;
 
@@ -24,33 +25,46 @@ public class GamePanel extends JPanel {
         setFocusable(true);
         addKeyListener(keyboard);
         add(birdcoordsLabel);
+        add(pipescoordslabel);
 
         Timer gameLoop = new Timer(16, e -> { // Runs every 16ms (~60 FPS)
             bird.handleBirdMovement(keyboard.isSpaceClicked());
-
             birdcoordsLabel.setText(bird.getCoords());
+            Pipes currentPipesSet = null;
+            Pipes pipesBeforeBird = null;
 
             // Move all pipes and remove off-screen ones
             for (int i = pipes.size() - 1; i >= 0; i--) {
-                Pipes p = pipes.get(i);
-                p.movePipesHorizontally(3);
+                currentPipesSet = pipes.get(i);
+                currentPipesSet.movePipesHorizontally(3);
 
+                if (currentPipesSet.getCurrentPipePositionX() > 100) {
+                    pipesBeforeBird = pipes.get(i);
+                }
                 // Remove pipes that have moved off the left side
-                if (p.pipesPositionX + p.pipesWidth < 0) {
+                if (currentPipesSet.pipesPositionX + currentPipesSet.pipesWidth < 0) {
                     pipes.remove(i);
                 }
             }
 
+            pipescoordslabel.setText(pipesBeforeBird.getCoords());
+
+            // get pipe set closest to the bird
+
+            // get it's coords and boundries
+
             // Spawn new pipes at intervals
             pipeSpawnTimer++;
+
             if (pipeSpawnTimer >= PIPE_SPAWN_INTERVAL) {
                 pipes.add(new Pipes());
                 pipeSpawnTimer = 0;
             }
 
-            if (bird.isBirdDead()) {
+            if (bird.isBirdDead(pipesBeforeBird)) {
                 ((Timer) e.getSource()).stop();
             }
+
             repaint();
         });
 

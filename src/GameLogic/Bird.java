@@ -47,7 +47,16 @@ public class Bird {
         }
     }
 
-    public boolean isBirdDead() {
+    // add frame boundries
+    public boolean isBirdDead(Pipes pipesBeforeBird) {
+        // pipe boundries
+        if (pipesBeforeBird.getCurrentPipePositionX() >= 100 && pipesBeforeBird.getCurrentPipePositionX() <= 160) {
+            if (y < pipesBeforeBird.getTopPipeBoundry() || y >= pipesBeforeBird.getBottomPipeBoundry()) {
+                return dead = true;
+            }
+        }
+
+        // frame boundries
         if (y < 0 || y > 820) {
             return dead = true;
         }
