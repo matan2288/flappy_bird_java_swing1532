@@ -5,10 +5,12 @@ import javax.swing.*;
 import GameLogic.User;
 
 public class UserInfo extends JPanel {
-    public UserInfo(MainFrame frame, User currentUser) {
+    JLabel nameLabel;
+    JTextField nameField;
 
-        JLabel nameLabel = new JLabel("Enter your name:");
-        JTextField nameField = new JTextField(15);
+    public UserInfo(MainFrame frame, User currentUser) {
+        nameLabel = new JLabel("Enter your name:");
+        nameField = new JTextField(15);
 
         add(nameLabel);
         add(nameField);
@@ -27,5 +29,17 @@ public class UserInfo extends JPanel {
         backHome.addActionListener(e -> frame.showScreen(PanelIndex.Home));
 
         add(backHome);
+
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                currentUser.setUserName(nameField.getText());
+            }
+
+            @Override
+            public void componentHidden(java.awt.event.ComponentEvent e) {
+                nameField.setText("");
+            }
+        });
     }
 }

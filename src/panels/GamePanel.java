@@ -30,104 +30,131 @@ public class GamePanel extends JPanel {
         // Listen to keyboard pressing
         setFocusable(true);
         addKeyListener(keyboard);
-        // add(birdcoordsLabel);
-        // add(pipesCoordslabel);
         add(scoreLabel);
         add(userNameLabel);
 
         gameLoop = new Timer(16, e -> { // Runs every 16ms (~60 FPS)
+            // Handle bird movement
             bird.handleBirdMovement(keyboard.isSpaceClicked());
             birdcoordsLabel.setText(bird.getCoords());
-            Pipes currentPipesSet = null;
+
             Pipes pipesBeforeBird = null;
+            int pipesPassed = 0;
 
-            // Move all pipes and remove off-screen ones
+            // Move pipes, detect scoring and cleanup
             for (int i = pipes.size() - 1; i >= 0; i--) {
-                currentPipesSet = pipes.get(i);
-                currentPipesSet.movePipesHorizontally(3);
+                Pipes currentPipe = pipes.get(i);
+                currentPipe.movePipesHorizontally(3);
 
-                // Get pipes before before
-                if (currentPipesSet.getCurrentPipePositionX() > 100) {
-                    pipesBeforeBird = pipes.get(i);
+                // Check if the pipe is before the bird (for collision check)
+                if (currentPipe.getCurrentPipePositionX() > 100) {
+                    // The latest pipe before the bird (closest OBSTACLE)
+                    pipesBeforeBird = currentPipe;
                 } else {
-                    // Pipes passed bird > Add to score
-                    score = score + 1;
+                    // Pipe just passed the bird, increase pipesPassed
+                    pipesPassed++;
                 }
 
                 // Remove pipes that have moved off the left side
-                if (currentPipesSet.pipesPositionX + currentPipesSet.pipesWidth < 0) {
+                if (currentPipe.pipesPositionX + currentPipe.pipesWidth < 0) {
                     pipes.remove(i);
                 }
             }
 
-            pipeSpawnTimer++;
+            // Update score only once for each pipe set passed
+            score += pipesPassed;
 
+            // Handle pipe spawning
+            pipeSpawnTimer++;
             if (pipeSpawnTimer >= PIPE_SPAWN_INTERVAL) {
                 pipes.add(new Pipes());
                 pipeSpawnTimer = 0;
             }
 
-            pipesCoordslabel.setText(pipesBeforeBird.getCoords());
+            // Safe check for pipesBeforeBird to avoid NPE
+            if (pipesBeforeBird != null) {
+                pipesCoordslabel.setText(pipesBeforeBird.getCoords());
+            } else {
+                pipesCoordslabel.setText("No Pipe");
+            }
 
+            // Update user data and labels
             currentUser.setUserScore(score);
+            scoreLabel.setText("Score: " + score);
+            userNameLabel.setText("User: " + currentUser.getUserName());
+
+            // Check bird state
             if (bird.isBirdDead(pipesBeforeBird)) {
                 ((Timer) e.getSource()).stop();
             }
 
-            scoreLabel.setText("Score: " + score);
-            userNameLabel.setText("User: " + currentUser.getUserName()); // Add this line
-
+            // Redraw
             repaint();
         });
 
-        JButton btn = new JButton("Stop game");
+        JButton stopGameButton = new JButton("Stop game");
+        JButton restartGameButton = new JButton("Restart game");
+        JButton nxt = new JButton("nxt");
 
-        btn.addActionListener(e -> {
+        stopGameButton.addActionListener(e -> {
             // frame.showScreen(PanelIndex.Home);
             gameLoop.stop();
         });
 
-        JButton btn2 = new JButton("Restart game");
-
-        JButton nxt = new JButton("nxt");
-
-        btn2.addActionListener(e -> {
-            startGame();
+        restartGameButton.addActionListener(e -> {
+            initializeGame();
         });
 
+        nxt.addActionListener(e -> {
+            frame.showScreen(PanelIndex.YourScore);
+        });
 
-        nxt.addActionListener(e -> frame.showScreen(PanelIndex.YourScore));
+        add(stopGameButton);
 
-
-        add(btn);
-
-        add(btn2);
+        add(restartGameButton);
         add(nxt);
 
         // Listen for when panel becomes visible/hidden
         addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentShown(java.awt.event.ComponentEvent e) {
-                // Start the game when panel becomes visible
+                // Intialize and Start the game when panel becomes visible
+                initializeGame();
                 startGame();
             }
 
             @Override
             public void componentHidden(java.awt.event.ComponentEvent e) {
-                // Stop the game when panel is hidden
-                gameLoop.stop();
+                initializeGame();
             }
         });
     }
 
-    public void startGame() {
+    public void initializeGame() {
+        // Reset bird and keyboard
         bird = new Bird();
         keyboard = new Keyboard();
+
+        // Reset score
+        score = 0;
+
+        // Reset pipes
+        pipes.clear();
+        Pipes initialPipe = new Pipes();
+        pipes.add(initialPipe);
+
+        // Reset pipe spawn timer
+        pipeSpawnTimer = 0;
+
+        // Re-add keyboard listener
         for (java.awt.event.KeyListener kl : getKeyListeners()) {
             removeKeyListener(kl);
         }
         addKeyListener(keyboard);
         requestFocusInWindow();
+    }
+
+    public void startGame() {
         gameLoop.start();
     }
 

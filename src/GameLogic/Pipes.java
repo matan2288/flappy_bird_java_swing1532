@@ -35,7 +35,6 @@ public class Pipes {
         return bottomPipePositionY;
     }
 
-
     // if current pipe position = 100 + pipe width, calculate borders
     public int getCurrentPipePositionX() {
         return pipesPositionX;
