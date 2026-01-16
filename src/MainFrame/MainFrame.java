@@ -18,7 +18,7 @@ public class MainFrame extends JFrame {
         mainPanel.add(new Home(this), PanelIndex.Home.name());
         mainPanel.add(new UserInfo(this, newUser), PanelIndex.UserInfo.name());
         mainPanel.add(new GamePanel(this, newUser), PanelIndex.Game.name());
-        mainPanel.add(new YourScore(this), PanelIndex.YourScore.name());
+        mainPanel.add(new YourScore(this, newUser), PanelIndex.YourScore.name());
         mainPanel.add(new Scoreboard(this), PanelIndex.Scoreboard.name());
 
         add(mainPanel);

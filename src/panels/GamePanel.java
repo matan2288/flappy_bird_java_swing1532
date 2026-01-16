@@ -69,6 +69,7 @@ public class GamePanel extends JPanel {
 
             pipesCoordslabel.setText(pipesBeforeBird.getCoords());
 
+            currentUser.setUserScore(score);
             if (bird.isBirdDead(pipesBeforeBird)) {
                 ((Timer) e.getSource()).stop();
             }
@@ -88,13 +89,20 @@ public class GamePanel extends JPanel {
 
         JButton btn2 = new JButton("Restart game");
 
+        JButton nxt = new JButton("nxt");
+
         btn2.addActionListener(e -> {
             startGame();
         });
 
+
+        nxt.addActionListener(e -> frame.showScreen(PanelIndex.YourScore));
+
+
         add(btn);
 
         add(btn2);
+        add(nxt);
 
         // Listen for when panel becomes visible/hidden
         addComponentListener(new java.awt.event.ComponentAdapter() {
