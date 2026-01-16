@@ -9,30 +9,33 @@ public class GamePanel extends JPanel {
     private Bird bird;
     private java.util.List<Pipes> pipes;
     private Keyboard keyboard;
+    private Timer gameLoop;
 
     private JLabel birdcoordsLabel = new JLabel();
     private JLabel pipesCoordslabel = new JLabel();
+    private JLabel userNameLabel = new JLabel();
     private JLabel scoreLabel = new JLabel();
+
     private final int PIPE_SPAWN_INTERVAL = 100; // Spawn new pipe every ~2 seconds at 60fps
     private int pipeSpawnTimer = 0;
     private int score = 0;
 
-    public GamePanel(MainFrame frame, User user) {
+    public GamePanel(MainFrame frame, User currentUser) {
         bird = new Bird();
         pipes = new java.util.ArrayList<>();
         pipes.add(new Pipes());
-
 
         keyboard = new Keyboard();
 
         // Listen to keyboard pressing
         setFocusable(true);
         addKeyListener(keyboard);
-        add(birdcoordsLabel);
-        add(pipesCoordslabel);
+        // add(birdcoordsLabel);
+        // add(pipesCoordslabel);
         add(scoreLabel);
+        add(userNameLabel);
 
-        Timer gameLoop = new Timer(16, e -> { // Runs every 16ms (~60 FPS)
+        gameLoop = new Timer(16, e -> { // Runs every 16ms (~60 FPS)
             bird.handleBirdMovement(keyboard.isSpaceClicked());
             birdcoordsLabel.setText(bird.getCoords());
             Pipes currentPipesSet = null;
@@ -71,11 +74,10 @@ public class GamePanel extends JPanel {
             }
 
             scoreLabel.setText("Score: " + score);
+            userNameLabel.setText("User: " + currentUser.getUserName()); // Add this line
 
             repaint();
         });
-
-        gameLoop.start();
 
         JButton btn = new JButton("Stop game");
 
@@ -87,19 +89,38 @@ public class GamePanel extends JPanel {
         JButton btn2 = new JButton("Restart game");
 
         btn2.addActionListener(e -> {
-            bird = new Bird();
-            keyboard = new Keyboard();
-            for (java.awt.event.KeyListener kl : getKeyListeners()) {
-                removeKeyListener(kl);
-            }
-            addKeyListener(keyboard);
-            requestFocusInWindow();
-            gameLoop.start();
+            startGame();
         });
 
         add(btn);
 
         add(btn2);
+
+        // Listen for when panel becomes visible/hidden
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                // Start the game when panel becomes visible
+                startGame();
+            }
+
+            @Override
+            public void componentHidden(java.awt.event.ComponentEvent e) {
+                // Stop the game when panel is hidden
+                gameLoop.stop();
+            }
+        });
+    }
+
+    public void startGame() {
+        bird = new Bird();
+        keyboard = new Keyboard();
+        for (java.awt.event.KeyListener kl : getKeyListeners()) {
+            removeKeyListener(kl);
+        }
+        addKeyListener(keyboard);
+        requestFocusInWindow();
+        gameLoop.start();
     }
 
     @Override
