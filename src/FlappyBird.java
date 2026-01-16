@@ -5,4 +5,3 @@ public class FlappyBird {
         MainFrame.runApp();
     }
 }
-    
