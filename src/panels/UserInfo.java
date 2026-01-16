@@ -5,37 +5,30 @@ import javax.swing.*;
 import GameLogic.User;
 
 public class UserInfo extends JPanel {
-    JLabel nameLabel;
-    JTextField nameField;
+    private JLabel nameLabel;
+    private JTextField nameField;
+    private JButton startGame;
+    private JButton backHomeButton;
 
     public UserInfo(MainFrame frame, User currentUser) {
         nameLabel = new JLabel("Enter your name:");
         nameField = new JTextField(15);
+        startGame = new JButton("Start Game");
+        backHomeButton = new JButton("Back");
 
-        add(nameLabel);
-        add(nameField);
-
-        JButton play = new JButton("Start Game");
-
-        play.addActionListener(e -> {
+        startGame.addActionListener(e -> {
             currentUser.setUserName(nameField.getText());
             frame.showScreen(PanelIndex.Game);
         });
 
-        add(play);
+        backHomeButton.addActionListener(e -> frame.showScreen(PanelIndex.Home));
 
-        JButton backHome = new JButton("Back");
-
-        backHome.addActionListener(e -> frame.showScreen(PanelIndex.Home));
-
-        add(backHome);
+        add(nameLabel);
+        add(nameField);
+        add(startGame);
+        add(backHomeButton);
 
         addComponentListener(new java.awt.event.ComponentAdapter() {
-            @Override
-            public void componentShown(java.awt.event.ComponentEvent e) {
-                currentUser.setUserName(nameField.getText());
-            }
-
             @Override
             public void componentHidden(java.awt.event.ComponentEvent e) {
                 nameField.setText("");
