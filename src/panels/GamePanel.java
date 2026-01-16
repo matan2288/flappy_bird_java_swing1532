@@ -9,15 +9,19 @@ public class GamePanel extends JPanel {
     private Bird bird;
     private java.util.List<Pipes> pipes;
     private Keyboard keyboard;
+
     private JLabel birdcoordsLabel = new JLabel();
-    private JLabel pipescoordslabel = new JLabel();
+    private JLabel pipesCoordslabel = new JLabel();
+    private JLabel scoreLabel = new JLabel();
     private final int PIPE_SPAWN_INTERVAL = 100; // Spawn new pipe every ~2 seconds at 60fps
     private int pipeSpawnTimer = 0;
+    private int score = 0;
 
-    public GamePanel(MainFrame frame) {
+    public GamePanel(MainFrame frame, User user) {
         bird = new Bird();
         pipes = new java.util.ArrayList<>();
         pipes.add(new Pipes());
+
 
         keyboard = new Keyboard();
 
@@ -25,7 +29,8 @@ public class GamePanel extends JPanel {
         setFocusable(true);
         addKeyListener(keyboard);
         add(birdcoordsLabel);
-        add(pipescoordslabel);
+        add(pipesCoordslabel);
+        add(scoreLabel);
 
         Timer gameLoop = new Timer(16, e -> { // Runs every 16ms (~60 FPS)
             bird.handleBirdMovement(keyboard.isSpaceClicked());
@@ -38,22 +43,20 @@ public class GamePanel extends JPanel {
                 currentPipesSet = pipes.get(i);
                 currentPipesSet.movePipesHorizontally(3);
 
+                // Get pipes before before
                 if (currentPipesSet.getCurrentPipePositionX() > 100) {
                     pipesBeforeBird = pipes.get(i);
+                } else {
+                    // Pipes passed bird > Add to score
+                    score = score + 1;
                 }
+
                 // Remove pipes that have moved off the left side
                 if (currentPipesSet.pipesPositionX + currentPipesSet.pipesWidth < 0) {
                     pipes.remove(i);
                 }
             }
 
-            pipescoordslabel.setText(pipesBeforeBird.getCoords());
-
-            // get pipe set closest to the bird
-
-            // get it's coords and boundries
-
-            // Spawn new pipes at intervals
             pipeSpawnTimer++;
 
             if (pipeSpawnTimer >= PIPE_SPAWN_INTERVAL) {
@@ -61,9 +64,13 @@ public class GamePanel extends JPanel {
                 pipeSpawnTimer = 0;
             }
 
+            pipesCoordslabel.setText(pipesBeforeBird.getCoords());
+
             if (bird.isBirdDead(pipesBeforeBird)) {
                 ((Timer) e.getSource()).stop();
             }
+
+            scoreLabel.setText("Score: " + score);
 
             repaint();
         });
