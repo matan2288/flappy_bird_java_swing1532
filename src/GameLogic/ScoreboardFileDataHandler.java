@@ -45,7 +45,7 @@ public class ScoreboardFileDataHandler {
     }
   }
 
-  public void turnFileOutputToHashmap(String fileContent) {
+  public LinkedHashMap<String, String> turnFileOutputToHashmap(String fileContent) {
     // Read all lines from the file and print them out
     LinkedHashMap<String, String> scoreboard = new LinkedHashMap<String, String>();
 
@@ -71,6 +71,7 @@ public class ScoreboardFileDataHandler {
     }
 
     System.out.println(scoreboard);
+    return scoreboard;
   }
 
   void main(String[] args) {
