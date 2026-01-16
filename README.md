@@ -17,6 +17,13 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 
 The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
 
+## Building and Running
+
+
+### Compile the project & Run the application:
+```bash
+javac -d bin -sourcepath src src/**/*.java src/*.java && java -cp bin FlappyBird
+```
 
 Diagram:
 https://app.diagrams.net/#G1iUJjz6zgnlljq6DMpPmRuQ2_jVpHGwbI#%7B%22pageId%22%3A%22tlDLi45S8lB7pMdPApnj%22%7D
