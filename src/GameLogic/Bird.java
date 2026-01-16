@@ -14,8 +14,8 @@ public class Bird {
 
     public double birdDropSpeed;
     public double gravity;
-    private final double jumpSpeed = -4.5;
-    private int jumpDelay;
+    public final double jumpSpeed = -4.5;
+    public int jumpDelay;
 
     private Image image = Toolkit.getDefaultToolkit().getImage("assets/flappybird.png");
 

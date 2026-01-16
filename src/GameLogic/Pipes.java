@@ -1,29 +1,42 @@
 package GameLogic;
 
 public class Pipes {
-    public int x;
-    public int topY;
-    public int height;
-    public int width;
-    public int bottomY;
-    public int bottomWidth;
-    public int bottomHeight;
+    public int pipesPositionX;
+    public int pipesWidth;
+
+    public int topPipeHeight;
+    public int bottomPipeHeight;
+
+    public int topPipePositionY;
+    public int bottomPipePositionY;
+
 
     public Pipes() {
-        // Top pipe coordinates and dimensions
-        x = 300; // Horizontal center
-        topY = 0;
-        width = 80;
-        height = 300; // height for top pipe
+        //! panel height 820
+        pipesWidth = 60; // Standard pipe width
 
-        // Bottom pipe coordinates and dimensions
-        x = 300;
-        bottomHeight = 300; // height for bottom pipe
-        bottomY = 900 - bottomHeight; // frame height assumed 820
-        bottomWidth = width;
+        pipesPositionX = 700; // Spawn just off-screen to the right
+
+        topPipePositionY = 0;
+        topPipeHeight = 300;
+
+
+        bottomPipePositionY = 600;
+        bottomPipeHeight = 300;
+
+
+
+        // Set gap between top and bottom pipe
+        int pipeGap = 205;
+
+        // Ensure there is no spacing at the bottom (bottom pipe reaches the full edge)
+        int totalHeight = 820;
+
     }
 
-    public void setPipePosition(int a) {
-        x -= a;
+
+
+    public void movePipesHorizontally(int speed) {
+        pipesPositionX -= speed;
     }
 }

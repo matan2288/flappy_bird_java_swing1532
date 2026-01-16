@@ -7,13 +7,17 @@ import GameLogic.*;
 
 public class GamePanel extends JPanel {
     private Bird bird;
-    private Pipes pipes;
+    private java.util.List<Pipes> pipes;
     private Keyboard keyboard;
     private JLabel birdcoordsLabel = new JLabel();
+    private final int PIPE_SPAWN_INTERVAL = 100; // Spawn new pipe every ~2 seconds at 60fps
+    private int pipeSpawnTimer = 0;
 
     public GamePanel(MainFrame frame) {
         bird = new Bird();
-        pipes = new Pipes();
+        pipes = new java.util.ArrayList<>();
+        pipes.add(new Pipes());
+
         keyboard = new Keyboard();
 
         // Listen to keyboard pressing
@@ -26,9 +30,23 @@ public class GamePanel extends JPanel {
 
             birdcoordsLabel.setText(bird.getCoords());
 
-            pipes.setPipePosition(1);
+            // Move all pipes and remove off-screen ones
+            for (int i = pipes.size() - 1; i >= 0; i--) {
+                Pipes p = pipes.get(i);
+                p.movePipesHorizontally(3);
 
-            
+                // Remove pipes that have moved off the left side
+                if (p.pipesPositionX + p.pipesWidth < 0) {
+                    pipes.remove(i);
+                }
+            }
+
+            // Spawn new pipes at intervals
+            pipeSpawnTimer++;
+            if (pipeSpawnTimer >= PIPE_SPAWN_INTERVAL) {
+                pipes.add(new Pipes());
+                pipeSpawnTimer = 0;
+            }
 
             if (bird.isBirdDead()) {
                 ((Timer) e.getSource()).stop();
@@ -68,11 +86,15 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
         // Draw the bird
         g.drawImage(bird.getBirdImage(), bird.x, bird.y, bird.width, bird.height, null);
-        // If Pipes class doesn't have getPipeImage(), you could draw a simple pipe
-        // shape instead:
+
         g.setColor(new java.awt.Color(80, 200, 120)); // Example pipe color
-        g.fillRect(pipes.x, pipes.topY, pipes.width, pipes.height); // Top pipe
-        g.fillRect(pipes.x, pipes.bottomY, pipes.bottomWidth, pipes.bottomHeight); // Bottom pipe
+        // Draw all pipes in the pipes list
+        for (Pipes pipe : pipes) {
+            // Draw the top pipe
+            g.fillRect(pipe.pipesPositionX, pipe.topPipePositionY, pipe.pipesWidth, pipe.topPipeHeight);
+            // Draw the bottom pipe
+            g.fillRect(pipe.pipesPositionX, pipe.bottomPipePositionY, pipe.pipesWidth, pipe.bottomPipeHeight);
+        }
 
     }
 }

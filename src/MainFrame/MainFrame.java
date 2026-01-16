@@ -5,7 +5,6 @@ import panels.*;
 
 
 public class MainFrame extends JFrame {
-
     CardLayout cardLayout;
     JPanel mainPanel;
 
