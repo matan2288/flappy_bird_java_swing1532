@@ -23,7 +23,7 @@ public class MainFrame extends JFrame {
 
         add(mainPanel);
 
-        setTitle("Swing Navigation");
+        setTitle("Flappy Bird");
         setSize(600, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
