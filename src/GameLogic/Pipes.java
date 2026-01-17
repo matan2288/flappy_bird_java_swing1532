@@ -1,30 +1,22 @@
 package GameLogic;
 
 public class Pipes {
+    // These measurements based on the panel height which is 820px
+    final public int pipesWidth = 60;
     public int pipesPositionX;
-    public int pipesWidth;
-
     public int topPipeHeight;
     public int bottomPipeHeight;
-
-    public int topPipePositionY;
-    public int bottomPipePositionY;
+    final public int topPipePositionY = 0;
+    final public int bottomPipePositionY = 600;;
 
     public Pipes() {
-        // ! panel height 820
-        pipesWidth = 60; // Standard pipe width
-
-        pipesPositionX = 700; // Spawn just off-screen to the right
-
-        topPipePositionY = 0;
+        pipesPositionX = 700;
         topPipeHeight = 300;
-
-        bottomPipePositionY = 600;
         bottomPipeHeight = 300;
     }
 
-    public void movePipesHorizontally(int speed) {
-        pipesPositionX -= speed;
+    public void movePipesHorizontally(int screenMovementSpeed) {
+        pipesPositionX -= screenMovementSpeed;
     }
 
     public int getTopPipeBoundry() {

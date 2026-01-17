@@ -49,6 +49,7 @@ public class Scoreboard extends JPanel {
             tableData[row][1] = scoreboardData.get(username);
             row++;
         }
+
         table = new JTable(tableData, columnNames);
         table.setEnabled(false);
 

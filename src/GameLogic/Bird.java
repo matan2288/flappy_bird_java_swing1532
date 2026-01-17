@@ -4,20 +4,16 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 public class Bird {
-
     public int x;
     public int y;
     public int width;
     public int height;
-
     public boolean dead;
-
     public double birdDropSpeed;
     public double gravity;
-    public final double jumpSpeed = -4.5;
     public int jumpDelay;
-
-    private Image image = Toolkit.getDefaultToolkit().getImage("assets/flappybird.png");
+    public final double jumpSpeed = -6.5;
+    private Image image;
 
     public Bird() {
         x = 100;
@@ -25,12 +21,13 @@ public class Bird {
         birdDropSpeed = 0;
         width = 45;
         height = 32;
-        gravity = 0.1;
+        gravity = 0.2;
         jumpDelay = 10;
         dead = false;
     }
 
     public Image getBirdImage() {
+        image = Toolkit.getDefaultToolkit().getImage("assets/flappybird.png");
         return image;
     }
 
