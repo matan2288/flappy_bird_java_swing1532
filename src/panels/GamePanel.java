@@ -103,6 +103,7 @@ public class GamePanel extends JPanel {
 
         restartGameButton.addActionListener(e -> {
             initializeGame();
+            startGame();
         });
 
         nxt.addActionListener(e -> {
