@@ -44,18 +44,16 @@ public class Bird {
         }
     }
 
-    // add frame boundries
-    public boolean isBirdDead(Pipes pipesBeforeBird) {
-        // pipe boundries
-        if (pipesBeforeBird.getCurrentPipePositionX() >= 100 && pipesBeforeBird.getCurrentPipePositionX() <= 160) {
-            if (y < pipesBeforeBird.getTopPipeBoundry() || y >= pipesBeforeBird.getBottomPipeBoundry()) {
-                return dead = true;
-            }
-        }
-
-        // frame boundries
+    public boolean isBirdDead(Pipes p) {
         if (y < 0 || y > 820) {
-            return dead = true;
+            dead = true;
+            return dead;
+        }
+        if (x + width > p.getCurrentPipePositionX() && x < p.getCurrentPipePositionX() + p.pipesWidth) {
+            if (y < p.getTopPipeBoundry() || y + height > p.getBottomPipeBoundry()) {
+                dead = true;
+                return dead;
+            }
         }
         return false;
     }

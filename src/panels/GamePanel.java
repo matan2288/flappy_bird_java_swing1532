@@ -61,7 +61,7 @@ public class GamePanel extends JPanel {
                 }
 
                 // Remove pipes that have moved off the left side
-                if (currentPipeSet.pipesPositionX + currentPipeSet.pipesWidth < 0) {
+                if (currentPipeSet.pipesPositionX < -60) {
                     pipes.remove(i);
                 }
             }
