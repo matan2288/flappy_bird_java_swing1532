@@ -18,6 +18,13 @@ public class UserInfo extends JPanel {
         gbc.gridx = 0;
         gbc.insets = new Insets(15, 0, 15, 0);
 
+        // Description label above the name field
+        JLabel descriptionLabel = new JLabel("Get ready to flap! Enter your name to begin.");
+        descriptionLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        descriptionLabel.setForeground(new Color(80, 80, 80));
+        gbc.gridy = 0;
+        add(descriptionLabel, gbc);
+
         // Name text field with placeholder-style border
         nameField = new JTextField(15);
         nameField.setFont(new Font("SansSerif", Font.PLAIN, 14));
@@ -47,7 +54,7 @@ public class UserInfo extends JPanel {
             }
         });
         
-        gbc.gridy = 0;
+        gbc.gridy = 1;
         add(nameField, gbc);
 
         // Large round green Start button
@@ -97,7 +104,7 @@ public class UserInfo extends JPanel {
                 frame.showScreen(PanelIndex.Game);
             }
         });
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.insets = new Insets(30, 0, 30, 0);
         add(startGame, gbc);
 
@@ -110,7 +117,7 @@ public class UserInfo extends JPanel {
         backHomeButton.setContentAreaFilled(false);
         backHomeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         backHomeButton.addActionListener(e -> frame.showScreen(PanelIndex.Home));
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.insets = new Insets(15, 0, 15, 0);
         add(backHomeButton, gbc);
 
