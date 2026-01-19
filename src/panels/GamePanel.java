@@ -187,12 +187,11 @@ public class GamePanel extends JPanel {
 
         // Draw the bird based on the image and the dimensions
         g.drawImage(bird.getBirdImage(), bird.x, bird.y, bird.width, bird.height, null);
-        g.setColor(new java.awt.Color(80, 200, 120)); /** pipe color **/
 
-        // Draw pipes from the pipes array
+        // Draw pipes from the pipes array using images
         for (Pipes pipe : pipes) {
-            g.fillRect(pipe.pipesPositionX, pipe.topPipePositionY, pipe.pipesWidth, pipe.topPipeHeight);
-            g.fillRect(pipe.pipesPositionX, pipe.bottomPipePositionY, pipe.pipesWidth, pipe.bottomPipeHeight);
+            g.drawImage(pipe.getTopPipeImage(), pipe.pipesPositionX, pipe.topPipePositionY, pipe.pipesWidth, pipe.topPipeHeight, null);
+            g.drawImage(pipe.getBottomPipeImage(), pipe.pipesPositionX, pipe.bottomPipePositionY, pipe.pipesWidth, pipe.bottomPipeHeight, null);
         }
     }
 }

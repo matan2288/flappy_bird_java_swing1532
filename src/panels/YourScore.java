@@ -12,6 +12,7 @@ public class YourScore extends JPanel {
     private ScoreboardFileDataHandler scoreboardDataObject = new ScoreboardFileDataHandler();
 
     public YourScore(MainFrame frame, User currentUser) {
+        setOpaque(false);
         yourScoreLabel = new JLabel();
         backHomeButton = new JButton("Go To Home");
         scoreboardButton = new JButton("Scoreboard");

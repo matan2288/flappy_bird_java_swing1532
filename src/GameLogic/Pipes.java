@@ -1,8 +1,14 @@
 package GameLogic;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.util.Random;
 
 public class Pipes {
+    // Pipe images (static so they're loaded once and shared)
+    private static Image topPipeImage = Toolkit.getDefaultToolkit().getImage("assets/toppipe.png");
+    private static Image bottomPipeImage = Toolkit.getDefaultToolkit().getImage("assets/bottompipe.png");
+
     // These measurements based on the panel height which is 820px
     final public int pipesWidth = 80;
     public int pipesPositionX = 700;
@@ -50,4 +56,11 @@ public class Pipes {
                ", Bottom pipe boundry: " + getBottomPipeBoundry();
     }
 
+    public Image getTopPipeImage() {
+        return topPipeImage;
+    }
+
+    public Image getBottomPipeImage() {
+        return bottomPipeImage;
+    }
 }
