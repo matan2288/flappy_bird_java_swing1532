@@ -16,3 +16,6 @@ bin/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Generated audio files
+assets/game_music.wav

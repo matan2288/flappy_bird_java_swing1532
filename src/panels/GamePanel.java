@@ -23,6 +23,7 @@ public class GamePanel extends JPanel {
     private int score = 0;
     private int speedByScore = 3; // Starts slow for easy beginning
     private boolean isGameOver = false;
+    private AudioPlayer audioPlayer;
 
     public GamePanel(MainFrame frame, User currentUser) {
         setOpaque(false);
@@ -106,6 +107,10 @@ public class GamePanel extends JPanel {
                 ((Timer) e.getSource()).stop();
                 continueButton.setEnabled(true);
                 isGameOver = true;
+                // Stop music when game over
+                if (audioPlayer != null) {
+                    audioPlayer.stop();
+                }
             }
 
             // Redraw
@@ -113,7 +118,12 @@ public class GamePanel extends JPanel {
         });
 
         // ===== BUTTON ACTIONS =====
-        stopGameButton.addActionListener(e -> gameLoop.stop());
+        stopGameButton.addActionListener(e -> {
+            gameLoop.stop();
+            if (audioPlayer != null) {
+                audioPlayer.stop();
+            }
+        });
 
         restartGameButton.addActionListener(e -> {
             initializeGame();
@@ -133,6 +143,11 @@ public class GamePanel extends JPanel {
 
             @Override
             public void componentHidden(java.awt.event.ComponentEvent e) {
+                // Stop music and game when panel is hidden
+                gameLoop.stop();
+                if (audioPlayer != null) {
+                    audioPlayer.stop();
+                }
                 initializeGame();
             }
         });
@@ -206,6 +221,13 @@ public class GamePanel extends JPanel {
     }
 
     public void startGame() {
+        // Start background music if enabled
+        if (User.isMusicEnabled()) {
+            if (audioPlayer == null) {
+                audioPlayer = new AudioPlayer();
+            }
+            audioPlayer.loadAndPlay("assets/game_music.wav");
+        }
         gameLoop.start();
     }
 
