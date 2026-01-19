@@ -35,5 +35,8 @@ echo "Main-Class: FlappyBird" > manifest.txt
 jar cvfm FlappyBird.jar manifest.txt -C bin . -C assets .
 ```
 
-Diagram:
-https://app.diagrams.net/#G1iUJjz6zgnlljq6DMpPmRuQ2_jVpHGwbI#%7B%22pageId%22%3A%22tlDLi45S8lB7pMdPApnj%22%7D
+## Architecture
+
+Here's the project structure:
+
+![Flappy Bird Java Diagram](assets/FlappyBirdJavaDiagram.jpg)
