@@ -25,5 +25,12 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
 javac -d bin -sourcepath src src/**/*.java src/*.java && java -cp bin FlappyBird
 ```
 
+
+# Create JAR with manifest
+```bash
+echo "Main-Class: FlappyBird" > manifest.txt
+jar cvfm FlappyBird.jar manifest.txt -C bin . -C assets .
+```
+
 Diagram:
 https://app.diagrams.net/#G1iUJjz6zgnlljq6DMpPmRuQ2_jVpHGwbI#%7B%22pageId%22%3A%22tlDLi45S8lB7pMdPApnj%22%7D
