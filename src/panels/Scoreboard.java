@@ -12,6 +12,7 @@ public class Scoreboard extends JPanel {
     private JButton btn;
 
     public Scoreboard(MainFrame frame) {
+        setOpaque(false);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         btn = new JButton("Back to Home");
 

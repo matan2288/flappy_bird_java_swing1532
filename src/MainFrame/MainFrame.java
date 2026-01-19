@@ -9,19 +9,38 @@ public class MainFrame extends JFrame {
     CardLayout cardLayout;
     JPanel mainPanel;
     User newUser;
+    Image backgroundImage;
 
     public MainFrame() {
         cardLayout = new CardLayout();
-        mainPanel = new JPanel(cardLayout);
         newUser = new User();
+        backgroundImage = Toolkit.getDefaultToolkit().getImage("assets/flappybirdbg.png");
 
+        // Create a background panel that paints the image
+        JPanel backgroundPanel = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (backgroundImage != null) {
+                    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
+
+        // Create main panel with CardLayout and make it transparent
+        mainPanel = new JPanel(cardLayout);
+        mainPanel.setOpaque(false);
+
+        // Add all screens
         mainPanel.add(new Home(this), PanelIndex.Home.name());
         mainPanel.add(new UserInfo(this, newUser), PanelIndex.UserInfo.name());
         mainPanel.add(new GamePanel(this, newUser), PanelIndex.Game.name());
         mainPanel.add(new YourScore(this, newUser), PanelIndex.YourScore.name());
         mainPanel.add(new Scoreboard(this), PanelIndex.Scoreboard.name());
 
-        add(mainPanel);
+        // Add mainPanel on top of background
+        backgroundPanel.add(mainPanel, BorderLayout.CENTER);
+        setContentPane(backgroundPanel);
 
         setTitle("Flappy Bird");
         setSize(600, 900);

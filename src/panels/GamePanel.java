@@ -23,6 +23,7 @@ public class GamePanel extends JPanel {
     private int speedByScore = 5;
 
     public GamePanel(MainFrame frame, User currentUser) {
+        setOpaque(false);
         bird = new Bird();
         pipes = new java.util.ArrayList<>();
         pipes.add(new Pipes());

@@ -11,6 +11,7 @@ public class Home extends JPanel {
     private JButton goToScoreboardButton;
 
     public Home(MainFrame frame) {
+        setOpaque(false);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         icon = new ImageIcon(new ImageIcon("assets/flappybird.png").getImage().getScaledInstance(30, 25, Image.SCALE_SMOOTH));
         iconLabel = new JLabel(icon);

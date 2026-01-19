@@ -11,6 +11,7 @@ public class UserInfo extends JPanel {
     private JButton backHomeButton;
 
     public UserInfo(MainFrame frame, User currentUser) {
+        setOpaque(false);
         nameLabel = new JLabel("Enter your name:");
         nameField = new JTextField(15);
         startGame = new JButton("Start Game");
