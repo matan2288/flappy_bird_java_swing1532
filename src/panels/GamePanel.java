@@ -153,7 +153,6 @@ public class GamePanel extends JPanel {
     }
 
     public int setDifficulityByScore(int score) {
-
         switch (score) {
             case 500:
                 speedByScore = 6;
