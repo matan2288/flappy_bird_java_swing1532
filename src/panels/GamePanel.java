@@ -13,12 +13,14 @@ public class GamePanel extends JPanel {
 
     private JLabel userNameLabel = new JLabel();
     private JLabel scoreLabel = new JLabel();
+    private JLabel difficultyLevelLabel = new JLabel();
 
     private Pipes currentPipeSet = null;
     private Pipes upcomingPipeSet = null;
     private int PIPE_SPAWN_INTERVAL = 120; // Spawn new pipe every 2 second
     private int pipeSpawnTimer = 0;
     private int score = 0;
+    private int speedByScore = 5;
 
     public GamePanel(MainFrame frame, User currentUser) {
         bird = new Bird();
@@ -32,6 +34,7 @@ public class GamePanel extends JPanel {
         addKeyListener(keyboard);
         add(scoreLabel);
         add(userNameLabel);
+        add(difficultyLevelLabel);
 
         // Start game loop
         gameLoop = new Timer(16, e -> { // Runs every 16ms (~60 FPS)
@@ -49,7 +52,7 @@ public class GamePanel extends JPanel {
             // Move pipes, detect scoring and cleanup
             for (int i = pipes.size() - 1; i >= 0; i--) {
                 currentPipeSet = pipes.get(i);
-                currentPipeSet.movePipesHorizontally(3);
+                currentPipeSet.movePipesHorizontally(setDifficulityByScore(score));
 
                 // Check if the pipe is before the bird (for collision check)
                 if (currentPipeSet.getCurrentPipePositionX() > 100) {
@@ -70,6 +73,7 @@ public class GamePanel extends JPanel {
             currentUser.setUserScore(score);
             scoreLabel.setText("Score: " + score);
             userNameLabel.setText("User: " + currentUser.getUserName());
+            difficultyLevelLabel.setText("Difficulty: " + speedByScore);
 
             // Check bird state
             if (bird.isBirdDead(upcomingPipeSet)) {
@@ -124,6 +128,8 @@ public class GamePanel extends JPanel {
 
         // Reset score
         score = 0;
+        speedByScore = 5;
+        PIPE_SPAWN_INTERVAL = 120;
 
         // Reset pipes
         pipes.clear();
@@ -143,6 +149,35 @@ public class GamePanel extends JPanel {
 
     public void startGame() {
         gameLoop.start();
+    }
+
+    public int setDifficulityByScore(int score) {
+
+        switch (score) {
+            case 100:
+                speedByScore = 6;
+                PIPE_SPAWN_INTERVAL = 100;
+                break;
+            case 300:
+                speedByScore = 8;
+                PIPE_SPAWN_INTERVAL = 80;
+                break;
+            case 600:
+                speedByScore = 9;
+                PIPE_SPAWN_INTERVAL = 70;
+                break;
+            case 1000:
+                speedByScore = 10;
+                PIPE_SPAWN_INTERVAL = 70;
+                break;
+            case 1500:
+                speedByScore = 11;
+                PIPE_SPAWN_INTERVAL = 70;
+                break;
+            default:
+                break;
+        }
+        return speedByScore;
     }
 
     @Override
