@@ -14,11 +14,11 @@ public class GamePanel extends JPanel {
     private JLabel userNameLabel = new JLabel();
     private JLabel scoreLabel = new JLabel();
 
-    private int PIPE_SPAWN_INTERVAL = 60; // Spawn new pipe every 1 second
-    private int pipeSpawnTimer = 0;
-    private int score = 0;
     private Pipes currentPipeSet = null;
     private Pipes upcomingPipeSet = null;
+    private int PIPE_SPAWN_INTERVAL = 120; // Spawn new pipe every 2 second
+    private int pipeSpawnTimer = 0;
+    private int score = 0;
 
     public GamePanel(MainFrame frame, User currentUser) {
         bird = new Bird();
@@ -59,11 +59,11 @@ public class GamePanel extends JPanel {
                     // Pipe just passed the bird, increase pipesPassed
                     score++;
                 }
+            }
 
-                // Remove pipes that have moved off the left side
-                if (currentPipeSet.pipesPositionX < -60) {
-                    pipes.remove(i);
-                }
+            // Remove pipes that have moved off the left side
+            if (currentPipeSet.pipesPositionX < -60) {
+                pipes.remove(0);
             }
 
             // Update user data and labels

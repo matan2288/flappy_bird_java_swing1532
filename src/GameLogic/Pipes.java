@@ -1,18 +1,30 @@
 package GameLogic;
 
+import java.util.Random;
+
 public class Pipes {
     // These measurements based on the panel height which is 820px
     final public int pipesWidth = 60;
-    public int pipesPositionX;
-    public int topPipeHeight;
-    public int bottomPipeHeight;
-    final public int topPipePositionY = 0;
-    final public int bottomPipePositionY = 600;;
+    public int pipesPositionX = 700;
+    public int topPipeHeight = 300;
+    public int bottomPipeHeight = 300;
+    public int topPipePositionY = 0;
+    public int bottomPipePositionY = 600;
+    public int verticalGap = 250;
+    Random rand = new Random();
+
 
     public Pipes() {
-        pipesPositionX = 700;
-        topPipeHeight = 300;
-        bottomPipeHeight = 300;
+        int randomHeight = (int)(Math.random() * 201) - 100; //between -100 and 100
+        int randomGap = (int)(Math.random() * (300 - 150 + 1)) + 150; //between 150-250
+
+        verticalGap = randomGap;
+
+        topPipePositionY = 0;
+        topPipeHeight += randomHeight;
+
+        bottomPipePositionY = topPipeHeight + verticalGap;
+        bottomPipeHeight = 900 - bottomPipePositionY;
     }
 
     public void movePipesHorizontally(int screenMovementSpeed) {
