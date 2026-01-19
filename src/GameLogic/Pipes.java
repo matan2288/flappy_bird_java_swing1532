@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Pipes {
     // These measurements based on the panel height which is 820px
-    final public int pipesWidth = 60;
+    final public int pipesWidth = 80;
     public int pipesPositionX = 700;
     public int topPipeHeight = 300;
     public int bottomPipeHeight = 300;

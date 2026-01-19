@@ -17,7 +17,7 @@ public class GamePanel extends JPanel {
 
     private Pipes currentPipeSet = null;
     private Pipes upcomingPipeSet = null;
-    private int PIPE_SPAWN_INTERVAL = 120; // Spawn new pipe every 2 second
+    private int PIPE_SPAWN_INTERVAL = 100; // Spawn new pipe every 2 second
     private int pipeSpawnTimer = 0;
     private int score = 0;
     private int speedByScore = 5;
@@ -65,7 +65,7 @@ public class GamePanel extends JPanel {
             }
 
             // Remove pipes that have moved off the left side
-            if (currentPipeSet.pipesPositionX < -60) {
+            if (currentPipeSet.pipesPositionX < -currentPipeSet.pipesWidth) {
                 pipes.remove(0);
             }
 
@@ -129,7 +129,7 @@ public class GamePanel extends JPanel {
         // Reset score
         score = 0;
         speedByScore = 5;
-        PIPE_SPAWN_INTERVAL = 120;
+        PIPE_SPAWN_INTERVAL = 100;
 
         // Reset pipes
         pipes.clear();
@@ -154,23 +154,23 @@ public class GamePanel extends JPanel {
     public int setDifficulityByScore(int score) {
 
         switch (score) {
-            case 100:
+            case 500:
                 speedByScore = 6;
-                PIPE_SPAWN_INTERVAL = 100;
+                PIPE_SPAWN_INTERVAL = 90;
                 break;
-            case 300:
+            case 1000:
                 speedByScore = 8;
                 PIPE_SPAWN_INTERVAL = 80;
                 break;
-            case 600:
+            case 1600:
                 speedByScore = 9;
                 PIPE_SPAWN_INTERVAL = 70;
                 break;
-            case 1000:
+            case 2100:
                 speedByScore = 10;
                 PIPE_SPAWN_INTERVAL = 70;
                 break;
-            case 1500:
+            case 2800:
                 speedByScore = 11;
                 PIPE_SPAWN_INTERVAL = 70;
                 break;
