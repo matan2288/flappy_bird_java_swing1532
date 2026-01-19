@@ -6,7 +6,7 @@ import javax.swing.border.*;
 import javax.swing.table.*;
 import java.awt.*;
 import GameLogic.ScoreboardFileDataHandler;
-import java.util.LinkedHashMap;
+import java.util.List;
 
 public class Scoreboard extends JPanel {
     private ScoreboardFileDataHandler scoreboardDataObject = new ScoreboardFileDataHandler();
@@ -56,16 +56,15 @@ public class Scoreboard extends JPanel {
     }
 
     private void updateTable() {
-        LinkedHashMap<String, String> scoreboardData = scoreboardDataObject
-                .turnFileOutputToHashmap(scoreboardDataObject.readFile());
+        List<String[]> scoreboardData = scoreboardDataObject.getScoreboardData();
 
-        String[] columnNames = { "Username", "Score" };
-        Object[][] tableData = new Object[scoreboardData.size()][2];
-        int row = 0;
-        for (String username : scoreboardData.keySet()) {
-            tableData[row][0] = username;
-            tableData[row][1] = scoreboardData.get(username);
-            row++;
+        String[] columnNames = { "Username", "Score", "Difficulty" };
+        Object[][] tableData = new Object[scoreboardData.size()][3];
+        for (int i = 0; i < scoreboardData.size(); i++) {
+            String[] entry = scoreboardData.get(i);
+            tableData[i][0] = entry[0]; // username
+            tableData[i][1] = entry[1]; // score
+            tableData[i][2] = entry[2]; // difficulty
         }
 
         // Create styled table
@@ -95,10 +94,11 @@ public class Scoreboard extends JPanel {
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 
         // Create scroll pane with styled border
         scrollPane = new JScrollPane(table);
-        scrollPane.setPreferredSize(new Dimension(300, 250));
+        scrollPane.setPreferredSize(new Dimension(380, 250));
         scrollPane.setBorder(new LineBorder(Color.DARK_GRAY, 2));
         scrollPane.getViewport().setBackground(Color.WHITE);
 

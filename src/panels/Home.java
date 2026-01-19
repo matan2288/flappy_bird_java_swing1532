@@ -20,7 +20,8 @@ public class Home extends JPanel {
         gbc.insets = new Insets(15, 0, 15, 0);
 
         // Welcome title
-        welcomeLabel = new JLabel("Welcome");
+        welcomeLabel = new JLabel("Welcome to Flappy Bird!");
+        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("SansSerif", Font.PLAIN, 24));
         gbc.gridy = 0;
         add(welcomeLabel, gbc);

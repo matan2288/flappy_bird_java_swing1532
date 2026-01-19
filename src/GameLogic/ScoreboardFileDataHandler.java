@@ -4,6 +4,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScoreboardFileDataHandler {
     private Path path = Path.of("assets/score_data.csv");
@@ -13,7 +15,7 @@ public class ScoreboardFileDataHandler {
             try {
                 Files.createFile(path);
                 // Write the header line when creating the file
-                String header = "Username:Score" + System.lineSeparator();
+                String header = "Username,Score,Difficulty" + System.lineSeparator();
                 Files.write(path, header.getBytes(), java.nio.file.StandardOpenOption.APPEND);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -36,7 +38,7 @@ public class ScoreboardFileDataHandler {
         return "";
     }
 
-    public void writeFile(String username, int score) {
+    public void writeFile(String username, int score, int difficulty) {
         try {
             // Check if file exists and doesn't end with newline
             String prefix = "";
@@ -47,7 +49,7 @@ public class ScoreboardFileDataHandler {
                 }
             }
             
-            String line = prefix + username + "," + score + System.lineSeparator();
+            String line = prefix + username + "," + score + "," + difficulty + System.lineSeparator();
             Files.write(path, line.getBytes(), java.nio.file.StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,6 +83,34 @@ public class ScoreboardFileDataHandler {
 
         System.out.println(scoreboard);
         return scoreboard;
+    }
+
+    // Returns a list of [username, score, difficulty] arrays for table display
+    public List<String[]> getScoreboardData() {
+        List<String[]> data = new ArrayList<>();
+        String fileContent = readFile();
+        
+        String[] lines = fileContent.split("\\R");
+        for (String line : lines) {
+            // Skip empty lines
+            if (line.trim().isEmpty()) {
+                continue;
+            }
+            // Skip header if present
+            if (line.trim().toLowerCase().startsWith("username")) {
+                continue;
+            }
+            
+            String[] parts = line.split(",");
+            if (parts.length >= 2) {
+                String username = parts[0].trim();
+                String score = parts[1].trim();
+                String difficulty = parts.length >= 3 ? parts[2].trim() : "-";
+                data.add(new String[]{username, score, difficulty});
+            }
+        }
+        
+        return data;
     }
 
     void main(String[] args) {

@@ -96,6 +96,7 @@ public class GamePanel extends JPanel {
 
             // Update user data and labels
             currentUser.setUserScore(score);
+            currentUser.setUserDifficulty(speedByScore);
             scoreLabel.setText("Score: " + score);
             userNameLabel.setText("User: " + currentUser.getUserName());
             difficultyLevelLabel.setText("Difficulty: " + speedByScore);

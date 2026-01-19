@@ -13,6 +13,7 @@ public class YourScore extends JPanel {
     private JPanel namePanel;
     private JPanel scorePanel;
     private JButton continueButton;
+    private JButton backHomeButton;
     private ScoreboardFileDataHandler scoreboardDataObject = new ScoreboardFileDataHandler();
 
     public YourScore(MainFrame frame, User currentUser) {
@@ -45,21 +46,30 @@ public class YourScore extends JPanel {
         gbc.insets = new Insets(20, 0, 20, 0);
         add(scorePanel, gbc);
 
-        // Continue button
-        continueButton = createStyledButton("Continue");
+        // Continue button - goes to Scoreboard
+        continueButton = createStyledButton("Scoreboard");
         continueButton.addActionListener(e -> {
+            frame.showScreen(PanelIndex.Scoreboard);
+        });
+        gbc.gridy = 2;
+        gbc.insets = new Insets(15, 0, 10, 0);
+        add(continueButton, gbc);
+
+        // Back Home button
+        backHomeButton = createStyledButton("Back Home");
+        backHomeButton.addActionListener(e -> {
             currentUser.resetCurrentUserObject();
             frame.showScreen(PanelIndex.Home);
         });
-        gbc.gridy = 2;
-        gbc.insets = new Insets(15, 0, 15, 0);
-        add(continueButton, gbc);
+        gbc.gridy = 3;
+        gbc.insets = new Insets(10, 0, 15, 0);
+        add(backHomeButton, gbc);
 
         // Update labels when panel becomes visible
         addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentShown(java.awt.event.ComponentEvent e) {
-                scoreboardDataObject.writeFile(currentUser.getUserName(), currentUser.getUserScore());
+                scoreboardDataObject.writeFile(currentUser.getUserName(), currentUser.getUserScore(), currentUser.getUserDifficulty());
                 nameLabel.setText(currentUser.getUserName() + " Your score is:");
                 scoreLabel.setText(String.valueOf(currentUser.getUserScore()));
             }

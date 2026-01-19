@@ -3,6 +3,7 @@ package GameLogic;
 public class User {
     private String username = "";
     private int userScore = 0;
+    private int userDifficulty = 3;
 
     public String getUserName() {
         return username;
@@ -10,6 +11,10 @@ public class User {
 
     public int getUserScore() {
         return userScore;
+    }
+
+    public int getUserDifficulty() {
+        return userDifficulty;
     }
 
     public void setUserName(String passedUsername) {
@@ -20,8 +25,13 @@ public class User {
         userScore = passedUserScore;
     }
 
+    public void setUserDifficulty(int passedUserDifficulty) {
+        userDifficulty = passedUserDifficulty;
+    }
+
     public void resetCurrentUserObject() {
         this.username = "";
         this.userScore = 0;
+        this.userDifficulty = 3;
     }
 }
