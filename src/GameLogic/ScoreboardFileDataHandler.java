@@ -38,7 +38,16 @@ public class ScoreboardFileDataHandler {
 
     public void writeFile(String username, int score) {
         try {
-            String line = username + "," + score + System.lineSeparator();
+            // Check if file exists and doesn't end with newline
+            String prefix = "";
+            if (Files.exists(path)) {
+                String content = Files.readString(path);
+                if (!content.isEmpty() && !content.endsWith("\n") && !content.endsWith("\r")) {
+                    prefix = System.lineSeparator(); // Add newline before new entry
+                }
+            }
+            
+            String line = prefix + username + "," + score + System.lineSeparator();
             Files.write(path, line.getBytes(), java.nio.file.StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
