@@ -27,7 +27,8 @@ javac -d bin -sourcepath src src/**/*.java src/*.java
 javac -d bin -sourcepath src src/**/*.java src/*.java && java -cp bin FlappyBird
 ```
 
-# Create JAR with manifest
+### Create JAR with manifest
+> This script build an executable file to run the game, build the app > run the commands below > click the generated JAR file to run the game .
 ```bash
 echo "Main-Class: FlappyBird" > manifest.txt
 jar cvfm FlappyBird.jar manifest.txt -C bin . -C assets .
