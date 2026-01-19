@@ -11,40 +11,64 @@ public class GamePanel extends JPanel {
     private Keyboard keyboard;
     private Timer gameLoop;
 
-    private JLabel userNameLabel = new JLabel();
-    private JLabel scoreLabel = new JLabel();
-    private JLabel difficultyLevelLabel = new JLabel();
+    private JLabel userNameLabel;
+    private JLabel scoreLabel;
+    private JLabel difficultyLevelLabel;
+    private JButton continueButton;
 
     private Pipes currentPipeSet = null;
     private Pipes upcomingPipeSet = null;
-    private int PIPE_SPAWN_INTERVAL = 100; // Spawn new pipe every 2 second
+    private int PIPE_SPAWN_INTERVAL = 120; // Spawn new pipe (starts slow for easy beginning)
     private int pipeSpawnTimer = 0;
     private int score = 0;
-    private int speedByScore = 5;
+    private int speedByScore = 3; // Starts slow for easy beginning
+    private boolean isGameOver = false;
 
     public GamePanel(MainFrame frame, User currentUser) {
         setOpaque(false);
+        setLayout(new BorderLayout());
+
         bird = new Bird();
         pipes = new java.util.ArrayList<>();
         pipes.add(new Pipes());
-
         keyboard = new Keyboard();
 
-        // Listen to keyboard pressing
+        // ===== STYLED TOP PANEL =====
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 6));
+        topPanel.setBackground(new Color(40, 40, 40, 220));
+
+        // ===== STYLED LABELS =====
+        scoreLabel = createStyledLabel("Score: 0");
+        userNameLabel = createStyledLabel("User: ");
+        difficultyLevelLabel = createStyledLabel("Difficulty: 5");
+
+        topPanel.add(scoreLabel);
+        topPanel.add(userNameLabel);
+        topPanel.add(difficultyLevelLabel);
+
+        // ===== STYLED BUTTONS =====
+        JButton stopGameButton = createStyledButton("Stop", new Color(220, 53, 69));
+        JButton restartGameButton = createStyledButton("Restart", new Color(40, 167, 69));
+        continueButton = createStyledButton("Continue", new Color(0, 123, 255));
+        continueButton.setEnabled(false); // Disabled until bird dies
+
+        topPanel.add(stopGameButton);
+        topPanel.add(restartGameButton);
+        topPanel.add(continueButton);
+
+        add(topPanel, BorderLayout.NORTH);
+
+            // Listen to keyboard pressing
         setFocusable(true);
         addKeyListener(keyboard);
-        add(scoreLabel);
-        add(userNameLabel);
-        add(difficultyLevelLabel);
 
-        // Start game loop
+            // Start game loop
         gameLoop = new Timer(16, e -> { // Runs every 16ms (~60 FPS)
             // Handle bird movement
             bird.handleBirdMovement(keyboard.isSpaceClicked());
 
             // Handle pipe spawning
             pipeSpawnTimer++;
-
             if (pipeSpawnTimer >= PIPE_SPAWN_INTERVAL) {
                 pipes.add(new Pipes());
                 pipeSpawnTimer = 0;
@@ -60,7 +84,7 @@ public class GamePanel extends JPanel {
                     // The latest pipe before the bird (closest OBSTACLE)
                     upcomingPipeSet = currentPipeSet;
                 } else {
-                    // Pipe just passed the bird, increase pipesPassed
+                    // Pipe just passed the bird, increase score
                     score++;
                 }
             }
@@ -76,41 +100,32 @@ public class GamePanel extends JPanel {
             userNameLabel.setText("User: " + currentUser.getUserName());
             difficultyLevelLabel.setText("Difficulty: " + speedByScore);
 
-            // Check bird state
+            // Check bird state - enable Continue when dead
             if (bird.isBirdDead(upcomingPipeSet)) {
                 ((Timer) e.getSource()).stop();
+                continueButton.setEnabled(true);
+                isGameOver = true;
             }
 
             // Redraw
             repaint();
         });
 
-        JButton stopGameButton = new JButton("Stop game");
-        JButton restartGameButton = new JButton("Restart game");
-        JButton continueButton = new JButton("Continue");
-
-        stopGameButton.addActionListener(e -> {
-            gameLoop.stop();
-        });
+        // ===== BUTTON ACTIONS =====
+        stopGameButton.addActionListener(e -> gameLoop.stop());
 
         restartGameButton.addActionListener(e -> {
             initializeGame();
             startGame();
         });
 
-        continueButton.addActionListener(e -> {
-            frame.showScreen(PanelIndex.YourScore);
-        });
-
-        add(stopGameButton);
-        add(restartGameButton);
-        add(continueButton);
+        continueButton.addActionListener(e -> frame.showScreen(PanelIndex.YourScore));
 
         // Listen for when panel becomes visible/hidden
         addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentShown(java.awt.event.ComponentEvent e) {
-                // Intialize and Start the game when panel becomes visible
+                // Initialize and Start the game when panel becomes visible
                 initializeGame();
                 startGame();
             }
@@ -122,6 +137,42 @@ public class GamePanel extends JPanel {
         });
     }
 
+    // Helper method to create styled labels
+    private JLabel createStyledLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("SansSerif", Font.BOLD, 13));
+        label.setForeground(Color.WHITE);
+        label.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        return label;
+    }
+
+    // Helper method to create styled buttons with hover effects
+    private JButton createStyledButton(String text, Color bgColor) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("SansSerif", Font.BOLD, 11));
+        button.setBackground(bgColor);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setOpaque(true);
+        button.setBorder(BorderFactory.createEmptyBorder(6, 14, 6, 14));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Hover effect
+        Color originalColor = bgColor;
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                if (button.isEnabled()) {
+                    button.setBackground(bgColor.brighter());
+                }
+            }
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                button.setBackground(originalColor);
+            }
+        });
+        return button;
+    }
+
     public void initializeGame() {
         // Reset bird and keyboard
         bird = new Bird();
@@ -129,16 +180,21 @@ public class GamePanel extends JPanel {
 
         // Reset score
         score = 0;
-        speedByScore = 5;
-        PIPE_SPAWN_INTERVAL = 100;
+        speedByScore = 3;
+        PIPE_SPAWN_INTERVAL = 120;
 
         // Reset pipes
         pipes.clear();
-        Pipes initialPipe = new Pipes();
-        pipes.add(initialPipe);
+        pipes.add(new Pipes());
 
         // Reset pipe spawn timer
         pipeSpawnTimer = 0;
+
+        // Disable Continue button on restart
+        continueButton.setEnabled(false);
+
+        // Reset game over state
+        isGameOver = false;
 
         // Re-add keyboard listener
         for (java.awt.event.KeyListener kl : getKeyListeners()) {
@@ -152,30 +208,35 @@ public class GamePanel extends JPanel {
         gameLoop.start();
     }
 
+    // Gradually increase difficulty based on score
     public int setDifficulityByScore(int score) {
-        switch (score) {
-            case 500:
-                speedByScore = 6;
-                PIPE_SPAWN_INTERVAL = 90;
-                break;
-            case 1000:
-                speedByScore = 8;
-                PIPE_SPAWN_INTERVAL = 80;
-                break;
-            case 1600:
-                speedByScore = 9;
-                PIPE_SPAWN_INTERVAL = 70;
-                break;
-            case 2100:
-                speedByScore = 10;
-                PIPE_SPAWN_INTERVAL = 70;
-                break;
-            case 2800:
-                speedByScore = 11;
-                PIPE_SPAWN_INTERVAL = 70;
-                break;
-            default:
-                break;
+        if (score < 100) {
+            speedByScore = 3;
+            PIPE_SPAWN_INTERVAL = 120;
+        } else if (score < 300) {
+            speedByScore = 4;
+            PIPE_SPAWN_INTERVAL = 110;
+        } else if (score < 600) {
+            speedByScore = 5;
+            PIPE_SPAWN_INTERVAL = 100;
+        } else if (score < 1000) {
+            speedByScore = 6;
+            PIPE_SPAWN_INTERVAL = 90;
+        } else if (score < 1500) {
+            speedByScore = 7;
+            PIPE_SPAWN_INTERVAL = 85;
+        } else if (score < 2000) {
+            speedByScore = 8;
+            PIPE_SPAWN_INTERVAL = 80;
+        } else if (score < 3000) {
+            speedByScore = 9;
+            PIPE_SPAWN_INTERVAL = 75;
+        } else if (score < 4000) {
+            speedByScore = 10;
+            PIPE_SPAWN_INTERVAL = 70;
+        } else {
+            speedByScore = 11;
+            PIPE_SPAWN_INTERVAL = 65;
         }
         return speedByScore;
     }
@@ -191,6 +252,47 @@ public class GamePanel extends JPanel {
         for (Pipes pipe : pipes) {
             g.drawImage(pipe.getTopPipeImage(), pipe.pipesPositionX, pipe.topPipePositionY, pipe.pipesWidth, pipe.topPipeHeight, null);
             g.drawImage(pipe.getBottomPipeImage(), pipe.pipesPositionX, pipe.bottomPipePositionY, pipe.pipesWidth, pipe.bottomPipeHeight, null);
+        }
+
+        // Draw Game Over message in the center when bird dies
+        if (isGameOver) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            // Get panel dimensions
+            int panelWidth = getWidth();
+            int panelHeight = getHeight();
+
+            // Draw semi-transparent overlay
+            g2d.setColor(new Color(0, 0, 0, 150));
+            g2d.fillRect(0, 0, panelWidth, panelHeight);
+
+            // Draw "GAME OVER" text
+            g2d.setFont(new Font("SansSerif", Font.BOLD, 48));
+            g2d.setColor(new Color(220, 53, 69)); // Red color
+            String gameOverText = "GAME OVER";
+            FontMetrics fm = g2d.getFontMetrics();
+            int textX = (panelWidth - fm.stringWidth(gameOverText)) / 2;
+            int textY = panelHeight / 2 - 30;
+            g2d.drawString(gameOverText, textX, textY);
+
+            // Draw score text below
+            g2d.setFont(new Font("SansSerif", Font.BOLD, 24));
+            g2d.setColor(Color.WHITE);
+            String scoreText = "Final Score: " + score;
+            fm = g2d.getFontMetrics();
+            textX = (panelWidth - fm.stringWidth(scoreText)) / 2;
+            textY = panelHeight / 2 + 20;
+            g2d.drawString(scoreText, textX, textY);
+
+            // Draw instruction text
+            g2d.setFont(new Font("SansSerif", Font.PLAIN, 16));
+            g2d.setColor(new Color(200, 200, 200));
+            String instructionText = "Press Restart or Continue";
+            fm = g2d.getFontMetrics();
+            textX = (panelWidth - fm.stringWidth(instructionText)) / 2;
+            textY = panelHeight / 2 + 60;
+            g2d.drawString(instructionText, textX, textY);
         }
     }
 }
