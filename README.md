@@ -19,12 +19,15 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
 
 ## Building and Running
 
+### Compile the project
+```bash
+javac -d bin -sourcepath src src/**/*.java src/*.java
+```
 
 ### Compile the project & Run the application:
 ```bash
 javac -d bin -sourcepath src src/**/*.java src/*.java && java -cp bin FlappyBird
 ```
-
 
 # Create JAR with manifest
 ```bash
