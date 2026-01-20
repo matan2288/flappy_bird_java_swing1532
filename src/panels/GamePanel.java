@@ -221,13 +221,11 @@ public class GamePanel extends JPanel {
     }
 
     public void startGame() {
-        // Start background music if enabled
-        if (User.isMusicEnabled()) {
-            if (audioPlayer == null) {
-                audioPlayer = new AudioPlayer();
-            }
-            audioPlayer.loadAndPlay("assets/game_music.wav");
+        // Start background music
+        if (audioPlayer == null) {
+            audioPlayer = new AudioPlayer();
         }
+        audioPlayer.loadAndPlay("assets/Super Mario Bros. medley.wav");
         gameLoop.start();
     }
 
