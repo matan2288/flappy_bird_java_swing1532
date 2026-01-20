@@ -112,11 +112,4 @@ public class ScoreboardFileDataHandler {
         
         return data;
     }
-
-    void main(String[] args) {
-        // fileExistenceChecker();
-        // writeFile("matan", 321321);
-        // writeFile("bob", 231);
-        // turnFileOutputToHashmap(readFile());
-    }
 }
