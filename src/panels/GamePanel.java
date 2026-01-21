@@ -14,7 +14,7 @@ public class GamePanel extends JPanel {
     private JLabel userNameLabel;
     private JLabel scoreLabel;
     private JLabel difficultyLevelLabel;
-    private JButton continueButton;
+    private JButton endButton;
 
     private Pipes currentPipeSet = null;
     private Pipes upcomingPipeSet = null;
@@ -50,12 +50,12 @@ public class GamePanel extends JPanel {
         // ===== STYLED BUTTONS =====
         JButton stopGameButton = createStyledButton("Stop", new Color(220, 53, 69));
         JButton restartGameButton = createStyledButton("Restart", new Color(40, 167, 69));
-        continueButton = createStyledButton("Continue", new Color(0, 123, 255));
-        continueButton.setEnabled(false); // Disabled until bird dies
+        endButton = createStyledButton("End", new Color(0, 123, 255));
+        endButton.setEnabled(false); // Disabled until bird dies
 
         topPanel.add(stopGameButton);
         topPanel.add(restartGameButton);
-        topPanel.add(continueButton);
+        topPanel.add(endButton);
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -105,7 +105,7 @@ public class GamePanel extends JPanel {
             // Check bird state - enable Continue when dead
             if (bird.isBirdDead(upcomingPipeSet)) {
                 ((Timer) e.getSource()).stop();
-                continueButton.setEnabled(true);
+                endButton.setEnabled(true);
                 isGameOver = true;
                 // Stop music when game over
                 if (audioPlayer != null) {
@@ -120,6 +120,7 @@ public class GamePanel extends JPanel {
         // ===== BUTTON ACTIONS =====
         stopGameButton.addActionListener(e -> {
             gameLoop.stop();
+            endButton.setEnabled(true);
             if (audioPlayer != null) {
                 audioPlayer.stop();
             }
@@ -130,7 +131,7 @@ public class GamePanel extends JPanel {
             startGame();
         });
 
-        continueButton.addActionListener(e -> frame.showScreen(PanelIndex.YourScore));
+        endButton.addActionListener(e -> frame.showScreen(PanelIndex.YourScore));
 
         // Listen for when panel becomes visible/hidden
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -207,7 +208,7 @@ public class GamePanel extends JPanel {
         pipeSpawnTimer = 0;
 
         // Disable Continue button on restart
-        continueButton.setEnabled(false);
+        endButton.setEnabled(false);
 
         // Reset game over state
         isGameOver = false;
