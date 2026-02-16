@@ -86,7 +86,7 @@ public class GamePanel extends JPanel {
                 currentPipeSet.movePipesHorizontally(setDifficulityByScore(score));
 
                 // Check if the pipe is before the bird (for collision check)
-                if (currentPipeSet.getCurrentPipePositionX() > 100) {
+                if (currentPipeSet.getCurrentPipePositionX() + currentPipeSet.pipesWidth > bird.x + bird.width) {
                     // The latest pipe before the bird (closest OBSTACLE)
                     upcomingPipeSet = currentPipeSet;
                 } else {
