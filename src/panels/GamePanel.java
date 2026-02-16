@@ -64,11 +64,11 @@ public class GamePanel extends JPanel {
 
         add(topPanel, BorderLayout.NORTH);
 
-            // Listen to keyboard pressing
+        // Listen to keyboard pressing
         setFocusable(true);
         addKeyListener(keyboard);
 
-            // Start game loop
+        // Start game loop
         gameLoop = new Timer(16, e -> { // Runs every 16ms (~60 FPS)
             // Handle bird movement
             bird.handleBirdMovement(keyboard.isSpaceClicked());
@@ -188,6 +188,7 @@ public class GamePanel extends JPanel {
                     button.setBackground(bgColor.brighter());
                 }
             }
+
             public void mouseExited(java.awt.event.MouseEvent e) {
                 button.setBackground(originalColor);
             }
@@ -277,8 +278,10 @@ public class GamePanel extends JPanel {
 
         // Draw pipes from the pipes array using images
         for (Pipes pipe : pipes) {
-            g.drawImage(pipe.getTopPipeImage(), pipe.pipesPositionX, pipe.topPipePositionY, pipe.pipesWidth, pipe.topPipeHeight, null);
-            g.drawImage(pipe.getBottomPipeImage(), pipe.pipesPositionX, pipe.bottomPipePositionY, pipe.pipesWidth, pipe.bottomPipeHeight, null);
+            g.drawImage(pipe.getTopPipeImage(), pipe.pipesPositionX, pipe.topPipePositionY, pipe.pipesWidth,
+                    pipe.topPipeHeight, null);
+            g.drawImage(pipe.getBottomPipeImage(), pipe.pipesPositionX, pipe.bottomPipePositionY, pipe.pipesWidth,
+                    pipe.bottomPipeHeight, null);
         }
 
         // Draw Game Over message in the center when bird dies
