@@ -105,8 +105,16 @@ public class UserInfo extends JPanel {
             }
         });
         gbc.gridy = 2;
-        gbc.insets = new Insets(30, 0, 30, 0);
+        gbc.insets = new Insets(30, 0, 15, 0);
         add(startGame, gbc);
+
+        // Instruction label
+        JLabel instructionLabel = new JLabel("Press SPACE to jump");
+        instructionLabel.setFont(new Font("SansSerif", Font.ITALIC, 14));
+        instructionLabel.setForeground(new Color(100, 100, 100));
+        gbc.gridy = 3;
+        gbc.insets = new Insets(5, 0, 20, 0);
+        add(instructionLabel, gbc);
 
         // Back button
         backHomeButton = new JButton("Back");
@@ -117,8 +125,8 @@ public class UserInfo extends JPanel {
         backHomeButton.setContentAreaFilled(false);
         backHomeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         backHomeButton.addActionListener(e -> frame.showScreen(PanelIndex.Home));
-        gbc.gridy = 3;
-        gbc.insets = new Insets(15, 0, 15, 0);
+        gbc.gridy = 4;
+        gbc.insets = new Insets(10, 0, 15, 0);
         add(backHomeButton, gbc);
 
         // Reset field when panel is hidden

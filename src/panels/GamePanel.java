@@ -35,27 +35,32 @@ public class GamePanel extends JPanel {
         keyboard = new Keyboard();
 
         // ===== STYLED TOP PANEL =====
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 6));
+        JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(new Color(40, 40, 40, 220));
 
-        // ===== STYLED LABELS =====
+        // ===== STYLED LABELS (LEFT SIDE) =====
+        JPanel labelsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 6));
+        labelsPanel.setOpaque(false);
         scoreLabel = createStyledLabel("Score: 0");
         userNameLabel = createStyledLabel("User: ");
         difficultyLevelLabel = createStyledLabel("Difficulty: 5");
+        labelsPanel.add(scoreLabel);
+        labelsPanel.add(userNameLabel);
+        labelsPanel.add(difficultyLevelLabel);
 
-        topPanel.add(scoreLabel);
-        topPanel.add(userNameLabel);
-        topPanel.add(difficultyLevelLabel);
-
-        // ===== STYLED BUTTONS =====
+        // ===== STYLED BUTTONS (RIGHT SIDE) =====
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 6));
+        buttonsPanel.setOpaque(false);
         JButton stopGameButton = createStyledButton("Stop", new Color(220, 53, 69));
         JButton restartGameButton = createStyledButton("Restart", new Color(40, 167, 69));
         endButton = createStyledButton("End", new Color(0, 123, 255));
         endButton.setEnabled(false); // Disabled until bird dies
+        buttonsPanel.add(stopGameButton);
+        buttonsPanel.add(restartGameButton);
+        buttonsPanel.add(endButton);
 
-        topPanel.add(stopGameButton);
-        topPanel.add(restartGameButton);
-        topPanel.add(endButton);
+        topPanel.add(labelsPanel, BorderLayout.WEST);
+        topPanel.add(buttonsPanel, BorderLayout.EAST);
 
         add(topPanel, BorderLayout.NORTH);
 
