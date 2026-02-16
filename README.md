@@ -15,24 +15,39 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 > If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
 
 
-## Building and Running
+## Prerequisites
 
-### Compile the project
-```bash
-javac -d bin -sourcepath src src/**/*.java src/*.java
-```
+- **JDK 14+** (JDK 21 recommended) — [Download](https://adoptium.net/)
 
-### Compile the project & Run the application:
+## Running the Game
+
+### Option 1: From source
 ```bash
 javac -d bin -sourcepath src src/**/*.java src/*.java && java -cp bin FlappyBird
 ```
 
-### Create JAR with manifest
-> This script build an executable file to run the game, build the app > run the commands below > click the generated JAR file to run the game .
+### Option 2: Build & run a JAR
 ```bash
-echo "Main-Class: FlappyBird" > manifest.txt
+javac -d bin -sourcepath src src/**/*.java src/*.java
 jar cvfm FlappyBird.jar manifest.txt -C bin . -C assets .
+java -jar FlappyBird.jar
 ```
+
+### Option 3: Standalone app (no Java install needed for end users)
+
+**macOS:**
+```bash
+jpackage --input . --name FlappyBird --main-jar FlappyBird.jar --main-class FlappyBird --type app-image --dest output
+```
+Creates `output/FlappyBird.app` — double-click to run.
+
+**Windows:**
+```bash
+jpackage --input . --name FlappyBird --main-jar FlappyBird.jar --main-class FlappyBird --type app-image --dest output
+```
+Creates `output/FlappyBird/FlappyBird.exe`.
+
+> `jpackage` must be run on the target OS. A GitHub Actions workflow is included at `.github/workflows/build-exe.yml` to build the Windows version remotely.
 
 ## Screenshots
 <img src="assets/screenshot_1.png" alt="Screenshot 1" width="300" height="440"> <img src="assets/screenshot_2.png" alt="Screenshot 2" width="300" height="440">

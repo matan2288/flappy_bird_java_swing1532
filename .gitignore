@@ -19,3 +19,9 @@ Thumbs.db
 
 # Generated audio files
 assets/game_music.wav
+
+# Build artifacts
+*.jar
+*.app
+FlappyBird.app/
+packaging/

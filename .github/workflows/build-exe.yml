@@ -1,0 +1,51 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch: # Manual trigger from GitHub Actions tab
+
+jobs:
+  build-windows-exe:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Compile Java sources
+        run: javac -d bin -sourcepath src src/FlappyBird.java src/GameLogic/*.java src/MainFrame/*.java src/panels/*.java
+
+      - name: Create JAR
+        run: jar cvfm FlappyBird.jar manifest.txt -C bin .
+
+      - name: Prepare packaging input
+        run: |
+          mkdir packaging-input
+          copy FlappyBird.jar packaging-input\
+          xcopy assets packaging-input\assets\ /E /I
+        shell: cmd
+
+      - name: Build EXE with jpackage
+        run: |
+          jpackage `
+            --input packaging-input `
+            --name FlappyBird `
+            --main-jar FlappyBird.jar `
+            --main-class FlappyBird `
+            --type app-image `
+            --dest output `
+            --app-version 1.0 `
+            --vendor "Matan" `
+            --description "Flappy Bird Java Game"
+
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FlappyBird-Windows
+          path: output/FlappyBird/
+          retention-days: 30
