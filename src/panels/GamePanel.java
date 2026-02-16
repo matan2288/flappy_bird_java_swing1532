@@ -237,7 +237,7 @@ public class GamePanel extends JPanel {
         if (audioPlayer == null) {
             audioPlayer = new AudioPlayer();
         }
-        audioPlayer.loadAndPlay("assets/Super Mario Bros. medley.wav");
+        audioPlayer.loadAndPlay("assets/background_music.wav");
         gameLoop.start();
     }
 

@@ -27,7 +27,7 @@ public class Home extends JPanel {
         add(welcomeLabel, gbc);
 
         // Icon in a circular border
-        icon = new ImageIcon(new ImageIcon("assets/flappybird.png").getImage().getScaledInstance(50, 40, Image.SCALE_SMOOTH));
+        icon = new ImageIcon(new ImageIcon("assets/bird.png").getImage().getScaledInstance(50, 40, Image.SCALE_SMOOTH));
         iconLabel = new JLabel(icon);
         iconLabel.setPreferredSize(new Dimension(80, 80));
         iconLabel.setHorizontalAlignment(SwingConstants.CENTER);

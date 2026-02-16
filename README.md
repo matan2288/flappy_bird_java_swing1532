@@ -36,10 +36,10 @@ jar cvfm FlappyBird.jar manifest.txt -C bin . -C assets .
 
 ## Screenshots
 
-<img src="assets/screenshot1.png" alt="Screenshot 1" width="300"> <img src="assets/screenshot2.png" alt="Screenshot 2" width="300">
+<img src="assets/screenshot_1.png" alt="Screenshot 1" width="300"> <img src="assets/screenshot_2.png" alt="Screenshot 2" width="300">
 
 ## Architecture
 
 Here's the project structure:
 
-![Flappy Bird Java Diagram](assets/FlappyBirdJavaDiagram.jpg)
+![Flappy Bird Java Diagram](assets/architecture_diagram.jpg)

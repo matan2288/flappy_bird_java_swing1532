@@ -12,7 +12,7 @@ public class Bird {
     public double birdDropSpeed;
     public double gravity;
     public final double jumpSpeed = -6.5;
-    private static final Image image = Toolkit.getDefaultToolkit().getImage("assets/flappybird.png");
+    private static final Image image = Toolkit.getDefaultToolkit().getImage("assets/bird.png");
 
     public Bird() {
         x = 100;

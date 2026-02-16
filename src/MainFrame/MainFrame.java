@@ -14,7 +14,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         cardLayout = new CardLayout();
         newUser = new User();
-        backgroundImage = Toolkit.getDefaultToolkit().getImage("assets/flappybirdbg.png");
+        backgroundImage = Toolkit.getDefaultToolkit().getImage("assets/background.png");
 
         // Create a background panel that paints the image
         JPanel backgroundPanel = new JPanel(new BorderLayout()) {

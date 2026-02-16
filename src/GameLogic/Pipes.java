@@ -5,8 +5,8 @@ import java.awt.Toolkit;
 
 public class Pipes {
     // Pipe images (static so they're loaded once and shared)
-    private static Image topPipeImage = Toolkit.getDefaultToolkit().getImage("assets/toppipe.png");
-    private static Image bottomPipeImage = Toolkit.getDefaultToolkit().getImage("assets/bottompipe.png");
+    private static Image topPipeImage = Toolkit.getDefaultToolkit().getImage("assets/top_pipe.png");
+    private static Image bottomPipeImage = Toolkit.getDefaultToolkit().getImage("assets/bottom_pipe.png");
 
     // These measurements based on the panel height which is 820px
     final public int pipesWidth = 80;
