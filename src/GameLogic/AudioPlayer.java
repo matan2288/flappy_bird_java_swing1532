@@ -27,6 +27,7 @@ public class AudioPlayer {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
             clip = AudioSystem.getClip();
             clip.open(audioStream);
+            audioStream.close();
 
             // Get volume control if available
             if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {

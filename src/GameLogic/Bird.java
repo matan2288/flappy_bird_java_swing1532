@@ -11,9 +11,8 @@ public class Bird {
     public boolean dead;
     public double birdDropSpeed;
     public double gravity;
-    public int jumpDelay;
     public final double jumpSpeed = -6.5;
-    private Image image;
+    private static final Image image = Toolkit.getDefaultToolkit().getImage("assets/flappybird.png");
 
     public Bird() {
         x = 100;
@@ -22,12 +21,10 @@ public class Bird {
         width = 45;
         height = 32;
         gravity = 0.2;
-        jumpDelay = 10;
         dead = false;
     }
 
     public Image getBirdImage() {
-        image = Toolkit.getDefaultToolkit().getImage("assets/flappybird.png");
         return image;
     }
 
@@ -38,10 +35,9 @@ public class Bird {
     public void handleBirdMovement(boolean isJumping) {
         if (isJumping) {
             birdDropSpeed = jumpSpeed;
-        } else {
-            birdDropSpeed += gravity;
-            y += (int) birdDropSpeed;
         }
+        birdDropSpeed += gravity;
+        y += (int) birdDropSpeed;
     }
 
     public boolean isBirdDead(Pipes p) {

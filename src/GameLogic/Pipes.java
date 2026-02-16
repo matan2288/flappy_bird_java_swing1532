@@ -2,7 +2,6 @@ package GameLogic;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.util.Random;
 
 public class Pipes {
     // Pipe images (static so they're loaded once and shared)
@@ -17,12 +16,11 @@ public class Pipes {
     public int topPipePositionY = 0;
     public int bottomPipePositionY = 600;
     public int verticalGap = 250;
-    Random rand = new Random();
 
 
     public Pipes() {
         int randomHeight = (int)(Math.random() * 201) - 100; //between -100 and 100
-        int randomGap = (int)(Math.random() * (300 - 150 + 1)) + 150; //between 150-250
+        int randomGap = (int)(Math.random() * (250 - 150 + 1)) + 150; //between 150-250
 
         verticalGap = randomGap;
 

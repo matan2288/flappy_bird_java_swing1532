@@ -16,8 +16,6 @@ public class GamePanel extends JPanel {
     private JLabel difficultyLevelLabel;
     private JButton endButton;
 
-    private Pipes currentPipeSet = null;
-    private Pipes upcomingPipeSet = null;
     private int PIPE_SPAWN_INTERVAL = 120; // Spawn new pipe (starts slow for easy beginning)
     private int pipeSpawnTimer = 0;
     private int score = 0;
@@ -80,15 +78,19 @@ public class GamePanel extends JPanel {
                 pipeSpawnTimer = 0;
             }
 
+            // Update difficulty once per frame
+            updateDifficultyByScore(score);
+
             // Move pipes, detect scoring and cleanup
+            Pipes upcomingPipeSet = null;
             for (int i = pipes.size() - 1; i >= 0; i--) {
-                currentPipeSet = pipes.get(i);
-                currentPipeSet.movePipesHorizontally(setDifficulityByScore(score));
+                Pipes currentPipe = pipes.get(i);
+                currentPipe.movePipesHorizontally(speedByScore);
 
                 // Check if the pipe is before the bird (for collision check)
-                if (currentPipeSet.getCurrentPipePositionX() + currentPipeSet.pipesWidth > bird.x + bird.width) {
+                if (currentPipe.getCurrentPipePositionX() + currentPipe.pipesWidth > bird.x + bird.width) {
                     // The latest pipe before the bird (closest OBSTACLE)
-                    upcomingPipeSet = currentPipeSet;
+                    upcomingPipeSet = currentPipe;
                 } else {
                     // Pipe just passed the bird, increase score
                     score++;
@@ -96,8 +98,11 @@ public class GamePanel extends JPanel {
             }
 
             // Remove pipes that have moved off the left side
-            if (currentPipeSet.pipesPositionX < -currentPipeSet.pipesWidth) {
-                pipes.remove(0);
+            if (!pipes.isEmpty()) {
+                Pipes oldest = pipes.get(0);
+                if (oldest.pipesPositionX < -oldest.pipesWidth) {
+                    pipes.remove(0);
+                }
             }
 
             // Update user data and labels
@@ -108,7 +113,7 @@ public class GamePanel extends JPanel {
             difficultyLevelLabel.setText("Difficulty: " + speedByScore);
 
             // Check bird state - enable Continue when dead
-            if (bird.isBirdDead(upcomingPipeSet)) {
+            if (upcomingPipeSet != null && bird.isBirdDead(upcomingPipeSet)) {
                 ((Timer) e.getSource()).stop();
                 endButton.setEnabled(true);
                 isGameOver = true;
@@ -237,7 +242,7 @@ public class GamePanel extends JPanel {
     }
 
     // Gradually increase difficulty based on score
-    public int setDifficulityByScore(int score) {
+    private void updateDifficultyByScore(int score) {
         if (score < 100) {
             speedByScore = 3;
             PIPE_SPAWN_INTERVAL = 120;
@@ -266,7 +271,6 @@ public class GamePanel extends JPanel {
             speedByScore = 11;
             PIPE_SPAWN_INTERVAL = 65;
         }
-        return speedByScore;
     }
 
     @Override
