@@ -36,7 +36,8 @@ jar cvfm FlappyBird.jar manifest.txt -C bin . -C assets .
 
 ## Screenshots
 
-<img src="assets/screenshot_1.png" alt="Screenshot 1" width="300"> <img src="assets/screenshot_2.png" alt="Screenshot 2" width="300">
+<img src="assets/screenshot_1.png" alt="Screenshot 1" width="300" height="440">
+<img src="assets/screenshot_2.png" alt="Screenshot 2" width="300" height="440">
 
 ## Architecture
 
