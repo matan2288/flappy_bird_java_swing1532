@@ -17,7 +17,7 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 
 ## Prerequisites
 
-- **JDK 14+** (JDK 21 recommended) — [Download](https://adoptium.net/)
+- **JDK 14+** (JDK 21 recommended) — [Download](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html)
 
 ## Running the Game
 
